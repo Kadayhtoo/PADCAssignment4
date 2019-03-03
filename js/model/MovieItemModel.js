@@ -57,6 +57,12 @@ class Movie extends APIDataModel{
     getRating(){
         return localStorage.getItem(this.id);
     }
+    setFavourite(movieId, fav){
+        localStorage.setItem(movieId+"_fav", fav);
+    }
+    getFavorite(id){
+        return localStorage.getItem(id+"_fav");
+    }
 
 }
 

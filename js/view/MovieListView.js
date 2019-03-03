@@ -5,8 +5,19 @@ class MovieListView {
         this.viewport = document.getElementById("viewport");
         this.viewport.addEventListener('click',(event)=>this.detailViewBtnListener(event));
         this.viewport.addEventListener('click', (event) => this.rateMovieListener(event));
+        this.viewport.addEventListener('click', (event) => this.favMovieListener(event));
     }
+    favMovieListener(event){
+        event.preventDefault();
+        
+        const targetEle = event.target;
+        if(targetEle && targetEle.parentNode.classList.contains('add-favorite')){
+            const movieId = targetEle.parentNode.dataset.favid;            
+            this.controller.storeFavourite(movieId,'yes');
+        }
+        this.controller.init();
 
+    }
     detailViewBtnListener(event){
         event.preventDefault();
         
@@ -24,6 +35,7 @@ class MovieListView {
         if (targetEle && targetEle.parentNode.classList.contains('star-wrapper')) {
             this.controller.storeRating(movieId, value);
         }
+    
     }
 
     getItemTemplate(object){
@@ -44,14 +56,26 @@ class MovieListView {
             }           
             
         }
-       
+        const fav=this.controller.getFavorite(object.id);
+        let favcontent="";
+        if(fav==='yes')
+        {
+           
+            favcontent = "<a class='add-favorite btn-floating ' href='#' id='favourite' data-favid="+object.id+" style='background-color:red'><i class='material-icons ' >favorite_border</i></a>";
+                
+        }
+        else{
+            favcontent = "<a class='add-favorite btn-floating ' href='#' id='favourite' data-favid="+object.id+" style='background-color:gray'><i class='material-icons ' >favorite_border</i></a>";
+        }
+        
         const result = this.itemTemplate
         .replace("{{this.title}}",object.title)
         .replace("{{this.poster}}",`https://image.tmdb.org/t/p/w400/${object.poster}`)
         .replace("{{this.overview}}",this.getExcerptWords(object.overview))
         .replace("{{this.id}}",object.id)
         .replace("{{this.ratedId}}", object.id)
-        .replace("{{this.ratingStars}}", starContent);
+        .replace("{{this.ratingStars}}", starContent)
+        .replace("{{this.favcontent}}",favcontent);
         return result;
     }    
 

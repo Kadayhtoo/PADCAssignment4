@@ -64,7 +64,13 @@ class Controller {
         this.movieListView.ratingMovie(movieId, ratingValue);
     }
 
-
+    storeFavourite(movieId, fav){
+        this.movieItemModel.setFavourite(movieId, fav);       
+    }
+    getFavorite(movieId)
+    {
+      return  this.movieItemModel.getFavorite(movieId);
+    }
 }
 
 export default Controller;
